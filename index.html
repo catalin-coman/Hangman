@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Hangman, Game">
+  <meta name="description" content="Hangman game">
+  <meta name="author" content="Catalin Coman">
+  <title>Hangman</title>
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div>
+    <h1>Hangman game</h1>
+  </div>
+
+  <div class="wordDiv">
+    <input type="text" id="inputWord" pattern="^[A-Z]+$" title="Only uppercase words allowed">
+    <input type="submit" value="Add Word" id="wordSubmitButton" onclick="addWord()">
+    <input type="reset" value="Reset game" onclick="window.location.reload()">
+  </div>
+
+  <div class="displayWordDiv">
+    <h2 id="displayWord">
+    </h2>
+  </div>
+
+  <div class="modelDrawingDiv">
+    <img src="images\try-1.jpg" alt="hangman" id="hangmanImage" style="height: 20%; width: 20%;">
+  </div>
+
+  <div class="letterDiv">
+    <input type="search" name="letterSearch" id="letterSearchBox" pattern="[A-Z]" title="Only uppercase letters allowed">
+    <input type="button" value="Search letter" id="letterSearchButton" onclick="searchLetter()">
+  </div>
+
+  <div class="triesLeftDiv">
+    <h4>
+      You have <a id="triesLeft">14</a> tries left!
+    </h4>
+  </div>
+
+  <div class="lettersUsedDiv">
+    <h4 class="lettersUsedHeader">
+      You have used the folowing letters: <p id="lettersUsed"></p>
+    </h4>
+  </div>
+
+</body>
+</html>

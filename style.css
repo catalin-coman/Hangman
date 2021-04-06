@@ -1,0 +1,40 @@
+h1 {
+  text-align: center;
+  font-size: 300%;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.lettersUsedHeader {
+  font-size: 70%;
+}
+
+.wordDiv {
+  text-align: center;
+}
+
+.displayWordDiv {
+  text-align: center;
+  font-size: 300%;
+}
+
+.letterDiv {
+  text-align: center;
+}
+
+.triesLeftDiv {
+  text-align: center;
+}
+
+.lettersUsedDiv {
+  text-align: center;
+  font-size: 200%;
+}
+
+.modelDrawingDiv {
+  text-align: center;
+}
+
+.modelDrawing {
+  width: 50%;
+  height: 50%;
+}
