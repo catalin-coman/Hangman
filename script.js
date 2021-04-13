@@ -1,135 +1,84 @@
-var inputWord = new Array, outputWord = new Array, triesLeft = 14, lettersLeft, lettersUsed = new Array;
+// creating the GameStatus object where we store the game information
+var GameStatus = {
+    inputWord : "",
+    outputWord : [],
+    triesLeft: 14,
+    lettersLeft: 0
+};
 
-// adding the input word to the game
-function addWord() {
-  if (patternCheck()) {
-    inputWord = document.getElementById("inputWord").value;
-    lettersLeft = inputWord.length;
-    outputWordConstruction();
-    displayWord();
-  }
-  // we clear the input box
-  document.getElementById('inputWord').value = '';
-}
+// getting the input word and constructing the GameStatus object
+function getInputWord() {
+    GameStatus.inputWord = document.getElementById('inputWord').value
+    GameStatus.lettersLeft = GameStatus.inputWord.length
 
-// searching for the input letter within the word
-function searchLetter() {
-  if (patternCheck()) {
-    var inputLetter = document.getElementById("letterSearchBox").value;
-    if(!inputWord.includes(inputLetter)) {
-      letterNotFound();
+    for (var i = 0; i < GameStatus.inputWord.length; ++i) {
+        GameStatus.outputWord[i] = '*'
     }
-    while (inputWord.includes(inputLetter)) {
-      letterFound();
+    displayOutputWord()
 
-      // we update the outputWord so that it displays the found letter
-      outputWord.splice(inputWord.indexOf(inputLetter), 1, inputLetter);
-      displayWord();
+    // clearing the input box
+    document.getElementById('inputWord').value = ''
+}
 
-      // we replace the found letter in the inputWord so that it can't be found again
-      inputWord = inputWord.replace(inputLetter, '*');
+function getInputLetter() {
+    var searchedLetter = document.getElementById('letterSearchBox').value
+    if (!searchForLetter(searchedLetter)) {
+        letterNotFound()
     }
-  }
-  displayTriesLeft();
-  displayUsedLetters(inputLetter);
+    while (searchForLetter(searchedLetter)) {
+        letterFound(searchedLetter)
+    }
+    displayOutputWord()
+    displayUsedLetters(searchedLetter)
 
-  // we clear the letter search box
-  document.getElementById('letterSearchBox').value = '';
+    // clearing the input box
+    document.getElementById('letterSearchBox').value = ''
 }
 
-// if letter is found and WINING the game
-function letterFound() {
-  --lettersLeft;
-  if (lettersLeft == 0) {
-    alert("Congratulations!" + "\n" + "You have guessed the word!");
-    displayHangman();
-  }
+
+function searchForLetter(inputLetter) {
+    GameStatus.usedLetters += inputLetter
+    return GameStatus.inputWord.includes(inputLetter)
 }
 
-// if letter is not found and LOSING the game
 function letterNotFound() {
-  --triesLeft;
-  if (triesLeft > 0) {
-    alert("The word does NOT contain the letter");
-  } else {
-    alert("Game Over!" + "\n" + "No more tries left");
-  }
-  displayHangman();
+    --GameStatus.triesLeft
+    if (GameStatus.triesLeft == 0) {
+        alert("GAME OVER!")
+    }
+    else {
+        alert("Letter not found!")
+    }
+    displayTriesLeft()
+    displayHangman()
 }
 
-function outputWordConstruction() {
-  for (var i = 0; i < inputWord.length; ++i) {
-    outputWord[i] = '*';
-  }
+function letterFound(inputLetter) {
+    // updating the output word so that it shows the found letter
+    GameStatus.outputWord.splice(GameStatus.inputWord.indexOf(inputLetter), 1, inputLetter)
+
+    // updating the input word so that it won't include the found letter anymore
+    GameStatus.inputWord = GameStatus.inputWord.replace(inputLetter, '*')
+
+    -- GameStatus.lettersLeft
+    if (GameStatus.lettersLeft == 0) {
+        alert("CONGRATULATIONS!" + "\n" + "YOU HAVE GUESSED THE WORD!")
+    }
 }
 
-function displayWord() {
-  document.getElementById('displayWord').innerHTML = outputWord.join("");
+function displayOutputWord() {
+    document.getElementById('displayWord').innerHTML = GameStatus.outputWord.join('')
 }
 
 function displayTriesLeft() {
-  document.getElementById('triesLeft').innerHTML = triesLeft;
+    document.getElementById('triesLeft').innerHTML = GameStatus.triesLeft
+}
+
+function displayHangman() {
+    var hangmanImage = document.getElementById('hangmanImage')
+    hangmanImage.src = 'images\\try-' + (15 - GameStatus.triesLeft) + '.jpg';
 }
 
 function displayUsedLetters(letter) {
-  if (!lettersUsed.includes(letter)) {
-    lettersUsed.push(letter);
-  }
-  document.getElementById('lettersUsed').innerHTML = lettersUsed;
-}
-
-// pattern check of inputs
-function patternCheck() {
-  if (document.getElementById('inputWord').validity.patternMismatch ||
-    document.getElementById('letterSearchBox').validity.patternMismatch) {
-    alert("Invalid input type");
-    return 0;
-  }
-  return 1;
-}
-
-// changing the hangman image
-function displayHangman() {
-  if (triesLeft == 13) {
-    document.getElementById('hangmanImage').src = 'images\\try-2.jpg';
-  }
-  if (triesLeft == 12) {
-    document.getElementById('hangmanImage').src = 'images\\try-3.jpg';
-  }
-  if (triesLeft == 11) {
-    document.getElementById('hangmanImage').src = 'images\\try-4.jpg';
-  }
-  if (triesLeft == 10) {
-    document.getElementById('hangmanImage').src = 'images\\try-5.jpg';
-  }
-  if (triesLeft == 9) {
-    document.getElementById('hangmanImage').src = 'images\\try-6.jpg';
-  }
-  if (triesLeft == 8) {
-    document.getElementById('hangmanImage').src = 'images\\try-7.jpg';
-  }
-  if (triesLeft == 7) {
-    document.getElementById('hangmanImage').src = 'images\\try-8.jpg';
-  }
-  if (triesLeft == 6) {
-    document.getElementById('hangmanImage').src = 'images\\try-9.jpg';
-  }
-  if (triesLeft == 5) {
-    document.getElementById('hangmanImage').src = 'images\\try-10.jpg';
-  }
-  if (triesLeft == 4) {
-    document.getElementById('hangmanImage').src = 'images\\try-11.jpg';
-  }
-  if (triesLeft == 3) {
-    document.getElementById('hangmanImage').src = 'images\\try-12.jpg';
-  }
-  if (triesLeft == 2) {
-    document.getElementById('hangmanImage').src = 'images\\try-13.jpg';
-  }
-  if (triesLeft == 1) {
-    document.getElementById('hangmanImage').src = 'images\\try-14.jpg';
-  }
-  if (lettersLeft == 0) {
-    document.getElementById('hangmanImage').src = 'images\\winning.jpeg';
-  }
+    document.getElementById('lettersUsed').innerHTML += letter + ','
 }
